@@ -28,13 +28,15 @@ def test_provider_not_found(get_request_mock):
 
 
 @override_settings(DJANGO_COUNTRY_FILTER_PROVIDER='provider_mock')
-def test_provider_success(get_request_mock, get_provider_mock):
+def test_provider_with_provider_mock(get_request_mock, get_provider_mock):
     """Must return a correct response because the configuration and\
     the provider are correct."""
     with patch.object(DjangoCountryFilterProvider,
                       '_get_imported_provider',
                       return_value=get_provider_mock(get_request_mock)):
+
         middleware = DjangoCountryFilterProvider(get_request_mock)
         response = middleware.get()
+
         assert response['country'] == 'AU'
         assert response['ip'] == '1.1.1.1'

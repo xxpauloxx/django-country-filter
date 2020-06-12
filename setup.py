@@ -11,6 +11,7 @@ setuptools.setup(
     description="Django middleware country filter.",
     long_description=long_description,
     long_description_content_type="text/markdown",
+    license='GPLv3+',
     url="https://github.com/0p4ul0/django-country-filter",
     packages=setuptools.find_packages(exclude=("tests",)),
     install_requires=['requests', 'django==2.2.13'],

@@ -1,4 +1,7 @@
 # DJANGO COUNTRY FILTER  
+
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/7979a0e1e3b449ef8e946a2dc8eeb74f)](https://app.codacy.com/manual/paulo-pinda/django-country-filter?utm_source=github.com&utm_medium=referral&utm_content=0p4ul0/django-country-filter&utm_campaign=Badge_Grade_Dashboard)
+
   
 Django middleware is an application access filter from the country of the request. The idea that you can do an access control directly in the application, without the need for a firewall or other resource, because often the applications are for country-specific use without many complexities.  
   

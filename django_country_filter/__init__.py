@@ -13,16 +13,14 @@ from .provider import DjangoCountryFilterProvider
 
 
 class DjangoCountryFilterMiddleware:
-    """Django middleware to call the class responsible for setting up\
-    the provider call, which is DjangoCountryFilterProvider."""
+    """Django middleware to call the class DjangoCountryFilterProvider."""
 
     def __init__(self, get_response):
         """Middleware initializer."""
         self.get_response = get_response
 
     def __call__(self, request: HttpRequest):
-        """Check the middleware settings and calls\
-        DjangoCountryFilterProvider."""
+        """Check the middleware settings and calls the provider."""
         response = self.get_response(request)
         if hasattr(settings, 'DJANGO_COUNTRY_FILTER_COUNTRIES'):
             if type(settings.DJANGO_COUNTRY_FILTER_COUNTRIES) is not list:

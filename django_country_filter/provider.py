@@ -1,9 +1,4 @@
-"""
-Class factory for providers.
-
-That will be used to verify the IP addresses of requests.
-
-"""
+"""Class factory for providers."""
 
 import importlib
 

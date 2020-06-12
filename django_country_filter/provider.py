@@ -8,7 +8,8 @@ from django.conf import settings
 class DjangoCountryFilterProvider:
     """Class factory for providers."""
 
-    def _get_imported_provider(self, request):
+    @staticmethod
+    def _get_imported_provider(request):
         """Return a provider according to the provider creation conventions."""
         module = settings.DJANGO_COUNTRY_FILTER_PROVIDER
         name = module.title().replace('_', '')

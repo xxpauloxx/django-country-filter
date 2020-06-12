@@ -23,7 +23,7 @@ class DjangoCountryFilterMiddleware:
         """Check the middleware settings and calls the provider."""
         response = self.get_response(request)
         if hasattr(settings, 'DJANGO_COUNTRY_FILTER_COUNTRIES'):
-            if type(settings.DJANGO_COUNTRY_FILTER_COUNTRIES) is not list:
+            if not isinstance(settings.DJANGO_COUNTRY_FILTER_COUNTRIES, list):
                 raise Exception(
                     'DJANGO_COUNTRY_FILTER_COUNTRIES is not a list type.')
             else:

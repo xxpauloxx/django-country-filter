@@ -1,4 +1,9 @@
-"""Class factory for providers that will be used to verify the IP addresses of requests."""
+"""
+Class factory for providers.
+
+That will be used to verify the IP addresses of requests.
+
+"""
 
 import importlib
 
@@ -9,7 +14,7 @@ class DjangoCountryFilterProvider:
     """Class factory for providers."""
 
     def _get_imported_provider(self, request):
-        """Returns a provider according to the provider creation conventions."""
+        """Return a provider according to the provider creation conventions."""
         module = settings.DJANGO_COUNTRY_FILTER_PROVIDER
         name = module.title().replace('_', '')
         provider = importlib.import_module(
@@ -27,5 +32,5 @@ class DjangoCountryFilterProvider:
             raise Exception('Error on provider building: Provider not found.')
 
     def get(self):
-        """Calls the get method of the built provider."""
+        """Call the get method of the built provider."""
         return self.provider.get()

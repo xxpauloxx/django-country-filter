@@ -14,7 +14,8 @@ class Ip2C:
         self.request = request
 
     def get(self):
-        """Must return the country and the IP address that made the request in the application."""
+        """Must return the country and the IP address that made the\
+        request in the application."""
         ip = self.request.META.get('REMOTE_ADDR')
         response = requests.get(self.URI.format(ip))
         if response.status_code != 200:

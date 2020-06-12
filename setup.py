@@ -1,3 +1,5 @@
+"""Setup package."""
+
 import setuptools
 
 with open("README.md", "r") as fh:
@@ -17,7 +19,7 @@ setuptools.setup(
     install_requires=['requests', 'django==2.2.13'],
     classifiers=[
         "Programming Language :: Python :: 3",
-        "License :: OSI Approved :: MIT License",
+        "License :: OSI Approved :: GPLv3",
         "Operating System :: OS Independent",
     ],
     python_requires='>=3.6',

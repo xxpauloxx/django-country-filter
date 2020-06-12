@@ -12,7 +12,7 @@ setuptools.setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/0p4ul0/django-country-filter",
-    packages=setuptools.find_packages(),
+    packages=setuptools.find_packages(exclude=("tests",)),
     install_requires=['requests', 'django==2.2.13'],
     classifiers=[
         "Programming Language :: Python :: 3",

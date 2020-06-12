@@ -47,4 +47,4 @@ def test_ip2c_exception(get_request_mock, get_provider_mock,
 
     with pytest.raises(Exception):
         provider = Ip2C(get_request_mock)
-        response = provider.get()
+        provider.get()

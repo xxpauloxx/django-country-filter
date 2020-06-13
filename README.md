@@ -9,7 +9,7 @@ Django middleware is an application access filter from the country of the reques
 The use of middleware is very simple, just install the middleware via pip and configure it in the application.
 
 ```bash
-$ pip install django_country_filter
+$ pip install django-country-filter
 ```
 In the `settings.py` file of the Django application, just insert the following line in the `MIDDLEWARE` configuration.  
 

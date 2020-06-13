@@ -24,6 +24,8 @@ MIDDLEWARE = {
 DJANGO_COUNTRY_FILTER_PROVIDER = 'ip2c' # But you can create your provider.
 DJANGO_COUNTRY_FILTER_COUNTRIES = ['BR'] # Only Brazil access application.
 ```
+**Providers:** ip2c
+
 ## How to help in development?
 
 You can help improve the code, improve the documentation and also implement new providers. To help, just keep the tests integral.

@@ -9,11 +9,11 @@ from django.http.request import HttpRequest
 from django.http import HttpResponseForbidden
 from django.conf import settings
 
-from .provider_factory import DjangoCountryFilterProvider
+from .provider_factory import ProviderFactory
 
 
 class DjangoCountryFilterMiddleware:
-    """Django middleware to call the class DjangoCountryFilterProvider."""
+    """Django middleware to call the class ProviderFactory."""
 
     def __init__(self, get_response):
         """Middleware initializer."""
@@ -27,7 +27,7 @@ class DjangoCountryFilterMiddleware:
                 raise Exception(
                     'DJANGO_COUNTRY_FILTER_COUNTRIES is not a list type.')
             else:
-                response_provider = DjangoCountryFilterProvider(request).get()
+                response_provider = ProviderFactory(request).get()
                 if not (response_provider['country'] in
                         settings.DJANGO_COUNTRY_FILTER_COUNTRIES):
                     return HttpResponseForbidden()

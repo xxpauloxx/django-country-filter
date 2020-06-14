@@ -4,7 +4,7 @@ which calls the django country filter provider factory."""
 import pytest
 
 from django_country_filter import DjangoCountryFilterMiddleware
-from django_country_filter.provider_factory import DjangoCountryFilterProvider
+from django_country_filter.provider_factory import ProviderFactory
 from django.test import override_settings
 
 from mock import patch
@@ -41,8 +41,8 @@ def test_forbidden_when_country_not_set(
 ):
     """Must return an unauthorized response when the request is from\
     a country that is not in DJANGO_COUNTRY_FILTER_COUNTRIES."""
-    with patch.object(DjangoCountryFilterProvider,
-                      '_get_imported_provider',
+    with patch.object(ProviderFactory,
+                      'get_provider_module',
                       return_value=get_provider_mock(get_request_mock)):
         middleware = DjangoCountryFilterMiddleware(get_response_mock)
         response = middleware(get_request_mock)

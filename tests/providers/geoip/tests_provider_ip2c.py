@@ -2,10 +2,10 @@
 
 import pytest
 
-from django_country_filter.providers.ip2c import Ip2C
+from django_country_filter.providers.geoip.ip2c import Ip2C
 from django.test import override_settings
 
-from django_country_filter.provider_factory import DjangoCountryFilterProvider
+from django_country_filter.provider_factory import ProviderFactory
 
 
 def test_initialize(get_request_mock):
@@ -31,7 +31,7 @@ def test_provider_with_ip2c_provider(get_request_mock, get_provider_mock,
     """Must return a correct response with ip2c provider."""
     requests_mock.get('https://ip2c.org/1.1.1.1', text='1;AU;AUS;Australia')
 
-    middleware = DjangoCountryFilterProvider(get_request_mock)
+    middleware = ProviderFactory(get_request_mock)
     response = middleware.get()
 
     assert response['country'] == 'AU'

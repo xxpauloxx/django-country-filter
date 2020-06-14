@@ -9,7 +9,7 @@ from django.http.request import HttpRequest
 from django.http import HttpResponseForbidden
 from django.conf import settings
 
-from .provider import DjangoCountryFilterProvider
+from .provider_factory import DjangoCountryFilterProvider
 
 
 class DjangoCountryFilterMiddleware:

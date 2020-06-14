@@ -4,7 +4,7 @@ which calls the django country filter provider factory."""
 import pytest
 
 from django_country_filter import DjangoCountryFilterMiddleware
-from django_country_filter.provider import DjangoCountryFilterProvider
+from django_country_filter.provider_factory import DjangoCountryFilterProvider
 from django.test import override_settings
 
 from mock import patch

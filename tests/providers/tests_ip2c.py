@@ -5,7 +5,7 @@ import pytest
 from django_country_filter.providers.ip2c import Ip2C
 from django.test import override_settings
 
-from django_country_filter.provider import DjangoCountryFilterProvider
+from django_country_filter.provider_factory import DjangoCountryFilterProvider
 
 
 def test_initialize(get_request_mock):

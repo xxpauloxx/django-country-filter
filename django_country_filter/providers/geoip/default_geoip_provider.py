@@ -4,7 +4,7 @@ import requests
 from django.http.request import HttpRequest
 
 
-class Ip2C:
+class DefaultGeoipProvider:
     """Implementation of the provider based on the ip2c.org service."""
 
     URI = 'https://ip2c.org/{}'

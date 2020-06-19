@@ -3,7 +3,7 @@
 from django.http.request import HttpRequest
 
 
-class ProviderMock:
+class GeoipProviderMock:
     """Mock to provider."""
 
     def __init__(self, request: HttpRequest):

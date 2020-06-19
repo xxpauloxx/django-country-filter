@@ -5,7 +5,7 @@ import pytest
 from django.http.request import HttpRequest
 from django.test.client import RequestFactory
 
-from .mocks.provider_mock import ProviderMock
+from .mocks.providers.geoip.geoip_provider_mock import GeoipProviderMock
 
 
 @pytest.fixture
@@ -27,4 +27,4 @@ def get_request_mock():
 @pytest.fixture
 def get_provider_mock():
     """Return the ProviderMock class."""
-    return ProviderMock
+    return GeoipProviderMock

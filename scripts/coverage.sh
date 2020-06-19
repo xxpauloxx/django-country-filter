@@ -15,3 +15,4 @@ fi
 coverage run -m pytest
 coverage xml --omit=".env,*/test*"
 mv coverage.xml cobertura.xml
+coverage report

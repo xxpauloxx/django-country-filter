@@ -1,8 +1,6 @@
 """Test case for the implementation of the django country filter middleware\
 which calls the django country filter provider factory."""
 
-import pytest
-
 from django_country_filter import DjangoCountryFilterMiddleware
 from django_country_filter.geoip_provider_factory import (
     GeoipProviderFactory

@@ -7,6 +7,11 @@ from django.test.client import RequestFactory
 
 from .mocks.providers.geoip.geoip_provider_mock import GeoipProviderMock
 
+from django.conf import settings
+settings.configure(
+    EMAIL_BACKEND='django.core.mail.backends.locmem.EmailBackend'
+)
+
 
 @pytest.fixture
 def get_response_mock():

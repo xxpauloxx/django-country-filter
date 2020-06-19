@@ -4,7 +4,6 @@ OMIT=".env,**/test*"
 
 # Clear old files.
 rm cobertura.xml
-rm coverage.xml
 rm -rf .pytest_cache
 
 # Generate report to coverage.

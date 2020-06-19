@@ -12,5 +12,6 @@ if test -f ".pytest_cache"; then
 fi
 
 # Generate report to coverage.
+coverage run -m pytest
 coverage xml --omit=".env,*/test*"
 mv coverage.xml cobertura.xml

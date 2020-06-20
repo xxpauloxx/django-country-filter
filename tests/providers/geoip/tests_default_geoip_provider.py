@@ -2,7 +2,6 @@
 
 import pytest
 
-from django.conf import settings
 from django_country_filter.geoip_provider_factory import (
     GeoipProviderFactory
 )

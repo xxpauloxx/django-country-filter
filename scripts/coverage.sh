@@ -1,7 +1,5 @@
 #!/bin/bash
 
-OMIT=".env,**/test*"
-
 # Clear old files.
 rm cobertura.xml
 rm -rf .pytest_cache

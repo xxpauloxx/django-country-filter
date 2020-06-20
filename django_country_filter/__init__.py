@@ -41,10 +41,12 @@ class DjangoCountryFilterMiddleware:
             self.configuration = settings.DJANGO_COUNTRY_FILTER
             if self.check_countries_in_settings():
                 requested = GeoipProviderFactory(request).get()
-                if self.blocked_country(requested['country']):
+                if DjangoCountryFilterMiddleware.blocked_country(
+                        requested['country']):
                     return HttpResponseForbidden()
         return self.get_response(request)
 
-    def blocked_country(self, country):
+    @staticmethod
+    def blocked_country(country):
         """Check if the country is blocked."""
         return country not in settings.DJANGO_COUNTRY_FILTER.get('countries')

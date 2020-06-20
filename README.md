@@ -4,16 +4,16 @@
 
 Django middleware is an application access filter from the country of the request. The idea that you can do an access control directly in the application, without the need for a firewall or other resource, because often the applications are for country-specific use without many complexities.  
   
-## Installation and use
+## BUILD PROJECT
 
 The use of middleware is very simple, just install the middleware via pip and configure it in the application.
 
 ```bash
 $ pip install django-country-filter
 ```
-In the `settings.py` file of the Django application, just insert the following line in the `MIDDLEWARE` configuration.  
-
-Need to `DJANGO_COUNTRY_FILTER_PROVIDER` and `DJANGO_COUNTRY_FILTER_COUNTRIES` configurations.  
+In the `settings.py` file of the Django application, just insert the following line in the `MIDDLEWARE` configuration and
+`DJANGO_COUNTRY_FILTER` configuration with parameters `countries`, this is sufficient to load the
+default geoip provider.
 
 ```python
 MIDDLEWARE = {
@@ -21,16 +21,28 @@ MIDDLEWARE = {
     ...
 }
 
-DJANGO_COUNTRY_FILTER_PROVIDER = 'ip2c' # But you can create your provider.
-DJANGO_COUNTRY_FILTER_COUNTRIES = ['BR'] # Only Brazil access application.
+DJANGO_COUNTRY_FILTER = {
+    'countries': ['BR']
+}
 ```
-**Providers:** ip2c
 
-## How to help in development?
+## CUSTOM GEOIP PROVIDERS
+
+There is a possibility that you can create your plug-in geoip provider in django-country-filter, using the `geoip_provider` and` geoip_provider_path` settings.
+
+```python
+DJANGO_COUNTRY_FILTER = {
+    'countries': ['BR'],
+    'geoip_provider': '{NameClassProvider}',
+    'geoip_provider_path': '{package_directory.package_py}'
+}
+```
+
+## HELP ME
 
 You can help improve the code, improve the documentation and also implement new providers. To help, just keep the tests integral.
 
-### Environment
+### DEVELOPMENT ENVIRONMENT
 
 ```bash
 $ python -m venv .env
@@ -38,3 +50,37 @@ $ source .env/bin/activate
 $ pip install -r requirements/development.txt
 $ pytest
 ```
+
+### BUILD CUSTOM GEOIP PROVIDER
+
+To create a geoip provider is very simple, just follow the convention used
+by `django-country-filter`, you need a class with a method called` get` and
+with an initializer that receives a `HttpRequest` object from Django.
+
+To create a geoip provider is very simple, just follow the convention used
+by `django-country-filter`, you need a class with a method called` get` and
+with an initializer that receives a `HttpRequest` object from Django.
+
+```python
+"""Template for geoip provider."""
+
+from django.http.request import HttpRequest
+
+
+class TemplateGeoipProvider:
+    """Template geoip provider."""
+
+    def __init__(self, request: HttpRequest):
+        """Initialize."""
+        self.request = request
+
+    def get(self):
+        """The method makes a request at the geoip provider and returns a
+        dictionary with the country and the ip address of the request object."""
+
+        return {
+            'country': 'AU',
+            'ip': self.request.META.get('REMOTE_ADDR')
+        }
+```
+

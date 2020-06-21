@@ -38,8 +38,7 @@ def test_provider_with_ip2c_provider(get_request_mock, requests_mock):
     assert response['ip'] == '1.1.1.1'
 
 
-def test_ip2c_exception(get_request_mock, get_provider_mock,
-                                     requests_mock):
+def test_ip2c_exception(get_request_mock, requests_mock):
     """Must return an exception with ip2c provider."""
     requests_mock.get('https://ip2c.org/1.1.1.1', text='1;AU;AUS;Australia',
                       status_code=500)

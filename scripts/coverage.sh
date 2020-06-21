@@ -1,5 +1,7 @@
 #!/bin/bash
 
+clear
+
 # Clear old files.
 rm cobertura.xml
 rm -rf .pytest_cache

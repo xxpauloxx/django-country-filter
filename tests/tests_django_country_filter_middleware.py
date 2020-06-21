@@ -106,7 +106,7 @@ def test_ip_cached_persist(
     }
 )
 @patch('shelve.open', return_value={})
-def test_ip_cached_persist(
+def test_ip_cached_not_forbiden(
         get_response_mock, get_request_mock, get_geoip_provider_mock):
     with patch.object(GeoipProviderFactory,
                       'get_custom_provider',

@@ -128,7 +128,3 @@ $ pip install -r requirements/development.txt
 $ pytest
 ```
 
-## TODO
-
-- Add logs.
-- Fix context tests.

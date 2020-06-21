@@ -41,7 +41,7 @@ class DjangoCountryFilterMiddleware:
                 cache_provider = CacheProviderFactory(request)
                 cache_country = cache_provider.get().get('country')
 
-                if (self.country_is_blocked(cache_country) 
+                if (self.country_is_blocked(cache_country)
                         and cache_country is not None):
                     (DjangoCountryFilterMiddleware
                         .logging_country_is_blocked(cache_country, request_ip))

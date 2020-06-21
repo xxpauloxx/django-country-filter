@@ -6,6 +6,7 @@ from django.http.request import HttpRequest
 from django.test.client import RequestFactory
 
 from .mocks.providers.geoip.geoip_provider_mock import GeoipProviderMock
+from .mocks.providers.cache.cache_provider_mock import CacheProviderMock
 
 from django.conf import settings
 settings.configure(
@@ -33,3 +34,9 @@ def get_request_mock():
 def get_geoip_provider_mock():
     """Return the GeoipProviderMock class."""
     return GeoipProviderMock
+
+
+@pytest.fixture
+def get_cache_provider_mock():
+    """Return the CacheProviderMock class."""
+    return CacheProviderMock

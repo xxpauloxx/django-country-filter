@@ -17,7 +17,7 @@ class CacheProviderMock:
         ip = self.request.META.get('REMOTE_ADDR')
         if ip == '1.1.1.1':
             return {
-                'country': 'BR',
+                'country': 'AU',
                 'ip': ip,
                 'created_at': datetime.now()
             }

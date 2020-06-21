@@ -11,6 +11,9 @@ from mock import patch
 from django_country_filter.providers.cache.default_cache_provider import (
     DefaultCacheProvider
 )
+from django_country_filter.cache_provider_factory import (
+    CacheProviderFactory
+)
 
 
 def test_initialize(get_response_mock, get_request_mock):
@@ -83,15 +86,18 @@ def test_ip_cached_forbidden(
     'countries': ['AU']
 })
 def test_ip_cached_persist(
-    get_response_mock, get_request_mock, get_geoip_provider_mock
+    get_response_mock, get_request_mock, get_geoip_provider_mock, get_cache_provider_mock
 ):
     """Must be ip cached and persist data."""
-    with patch.object(GeoipProviderFactory,
-                      'get_custom_provider',
-                      return_value=get_geoip_provider_mock(get_request_mock)):
-        factory = DjangoCountryFilterMiddleware(get_response_mock)
-        response = factory(get_request_mock)
-        assert response == 'hello from get_response'
+    with patch.object(
+        GeoipProviderFactory, 'get_custom_provider',
+            return_value=get_geoip_provider_mock(get_request_mock)):
+        with patch.object(
+            CacheProviderFactory, 'get_custom_provider',
+                return_value=get_cache_provider_mock(get_request_mock)):
+            factory = DjangoCountryFilterMiddleware(get_response_mock)
+            response = factory(get_request_mock)
+            assert response == 'hello from get_response'
 
 
 @override_settings(
@@ -115,3 +121,4 @@ def test_ip_cached_not_forbiden(
         factory = DjangoCountryFilterMiddleware(get_response_mock)
         response = factory(get_request_mock)
         assert response.status_code == 403
+

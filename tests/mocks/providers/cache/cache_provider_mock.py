@@ -1,6 +1,7 @@
 """Cache provider mock."""
 
 from django.http.request import HttpRequest
+from datetime import datetime
 
 
 class CacheProviderMock:
@@ -14,24 +15,13 @@ class CacheProviderMock:
     def get(self):
         """Get data in cache database."""
         ip = self.request.META.get('REMOTE_ADDR')
-        if self.db.get('countries') is not None:
-            for req in self.db.get('countries'):
-                if req['ip'] == ip:
-                    return req
+        if ip == '1.1.1.1':
+            return {
+                'country': 'BR',
+                'ip': ip,
+                'created_at': datetime.now()
+            }
         return {}
-
-    def save_on_database(self, data_cache):
-        """Save data cache on database."""
-        if self.db.get('countries') is None:
-            self.db['countries'] = [data_cache]
-        else:
-            for i in range(len(self.db.get('countries'))):
-                country = self.db.get('countries')[i]
-                if country.get('ip') == data_cache.get('ip'):
-                    self.db.get('countries')[i]['country'] = (
-                        data_cache.get('country'))
-                else:
-                    self.db['countries'].append(data_cache)
 
     def persist(self, data, created_at):
         """Persist the data on shelve database."""
@@ -40,4 +30,4 @@ class CacheProviderMock:
             'created_at': created_at,
             'ip': data['ip']
         }
-        self.save_on_database(data_cache)
+        self.db.update(data_cache)

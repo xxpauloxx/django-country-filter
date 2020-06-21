@@ -28,7 +28,7 @@ DJANGO_COUNTRY_FILTER = {
 
 ## CUSTOM GEOIP PROVIDERS
 
-There is a possibility that you can create your plug-in geoip provider in django-country-filter, using the `geoip_provider` and` geoip_provider_path` settings.
+There is a possibility that you can create your plug-in geoip provider in django-country-filter, using the `geoip_provider` and `geoip_provider_path` settings.
 
 ```python
 DJANGO_COUNTRY_FILTER = {
@@ -38,19 +38,17 @@ DJANGO_COUNTRY_FILTER = {
 }
 ```
 
-## HELP ME
+## CUSTOM CACHE PROVIDERS
 
-You can help improve the code, improve the documentation and also implement new providers. To help, just keep the tests integral.
+There is a possibility that you can create your plug-in cache provider in django-country-filter, using the `cache_provider` and `cache_provider_path` settings.
 
-### DEVELOPMENT ENVIRONMENT
-
-```bash
-$ python -m venv .env
-$ source .env/bin/activate
-$ pip install -r requirements/development.txt
-$ pytest
+```python
+DJANGO_COUNTRY_FILTER = {
+    'countries': ['BR'],
+    'cache_provider': '{NameClassProvider}',
+    'cache_provider_path': '{package_directory.package_py}'
+}
 ```
-
 ### BUILD CUSTOM GEOIP PROVIDER
 
 To create a geoip provider is very simple, just follow the convention used
@@ -82,5 +80,51 @@ class TemplateGeoipProvider:
             'country': 'AU',
             'ip': self.request.META.get('REMOTE_ADDR')
         }
+```
+
+### BUILD CUSTOM CACHE PROVIDER
+
+Build the cache provider is very simple as well and helps you create your own rules for handling the cache.
+After creating the cache provider just put in the custom cache provider settings.
+```python
+"""Template for cache provider."""
+
+from django.http.request import HttpRequest
+
+
+class TemplateCacheProvider:
+    """Template cache provider."""
+
+    def __init__(self, request: HttpRequest):
+        """Initialize."""
+        self.request = request
+
+    def get(self):
+        """The get method must be return a dict with country, ip and created_at field."""
+        ip = self.request.META.get('REMOTE_ADDR')
+        ...
+        return {
+            'country': 'AU',
+            'ip': ip,
+            'created_at': created_at
+        }
+
+    def persist(self, data):
+        """The persist method not return, contains only persistence rules."""
+        pass
+```
+
+
+## HELP ME
+
+You can help improve the code, improve the documentation and also implement new providers. To help, just keep the tests integral.
+
+### DEVELOPMENT ENVIRONMENT
+
+```bash
+$ python -m venv .env
+$ source .env/bin/activate
+$ pip install -r requirements/development.txt
+$ pytest
 ```
 

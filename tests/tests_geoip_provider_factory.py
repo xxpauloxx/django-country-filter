@@ -6,9 +6,10 @@ from django_country_filter.geoip_provider_factory import (
 from django.test import override_settings
 
 
-def test_provider_with_default_provider(get_request_mock, get_geoip_provider_mock):
-    """Must return a correct response because the configuration and\
-    the provider are correct."""
+def test_provider_with_default_provider(
+    get_request_mock, get_geoip_provider_mock
+):
+    """Must return a correct response with geoip default provider."""
     factory = GeoipProviderFactory(get_request_mock)
     assert 'DefaultGeoipProvider' in factory.provider.__str__()
 
@@ -17,9 +18,10 @@ def test_provider_with_default_provider(get_request_mock, get_geoip_provider_moc
     'geoip_provider': 'GeoipProviderMock',
     'geoip_provider_path': 'tests.mocks.providers.geoip.geoip_provider_mock'
 })
-def test_provider_with_custom_provider(get_request_mock, get_geoip_provider_mock):
-    """Must return a correct response because the configuration and\
-    the provider are correct."""
+def test_provider_with_custom_provider(
+    get_request_mock, get_geoip_provider_mock
+):
+    """Must return a correct response with custom geoip provider."""
     factory = GeoipProviderFactory(get_request_mock)
     response = factory.get()
 

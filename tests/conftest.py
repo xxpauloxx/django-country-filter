@@ -30,6 +30,6 @@ def get_request_mock():
 
 
 @pytest.fixture
-def get_provider_mock():
-    """Return the ProviderMock class."""
+def get_geoip_provider_mock():
+    """Return the GeoipProviderMock class."""
     return GeoipProviderMock

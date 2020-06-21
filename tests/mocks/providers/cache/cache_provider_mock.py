@@ -1,16 +1,14 @@
-"""Default cache provider package."""
-
-import shelve
+"""Cache provider mock."""
 
 from django.http.request import HttpRequest
 
 
-class DefaultCacheProvider:
-    """Default cache provider implementation."""
+class CacheProviderMock:
+    """Cache provider mock implementation."""
 
     def __init__(self, request: HttpRequest):
         """Initialize."""
-        self.db = shelve.open('cache.db')
+        self.db = {}
         self.request = request
 
     def get(self):
@@ -43,4 +41,3 @@ class DefaultCacheProvider:
             'ip': data['ip']
         }
         self.save_on_database(data_cache)
-

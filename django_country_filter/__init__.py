@@ -6,11 +6,13 @@ Responsible for filtering released countries to access the application.
 """
 import logging
 
+from datetime import datetime
 from django.http.request import HttpRequest
 from django.http import HttpResponseForbidden
 from django.conf import settings
 
 from .geoip_provider_factory import GeoipProviderFactory
+from .cache_provider_factory import CacheProviderFactory
 
 log = logging.getLogger(__name__)
 
@@ -40,13 +42,15 @@ class DjangoCountryFilterMiddleware:
         if hasattr(settings, 'DJANGO_COUNTRY_FILTER'):
             self.configuration = settings.DJANGO_COUNTRY_FILTER
             if self.check_countries_in_settings():
-                requested = GeoipProviderFactory(request).get()
-                if DjangoCountryFilterMiddleware.blocked_country(
-                        requested['country']):
+                cache_provider = CacheProviderFactory(request)
+                if self.blocked_country(cache_provider.get().get('country')):
+                    return HttpResponseForbidden()
+                geoip_provider = GeoipProviderFactory(request).get()
+                cache_provider.provider.persist(geoip_provider, datetime.now())
+                if self.blocked_country(geoip_provider['country']):
                     return HttpResponseForbidden()
         return self.get_response(request)
 
-    @staticmethod
-    def blocked_country(country):
+    def blocked_country(self, country):
         """Check if the country is blocked."""
-        return country not in settings.DJANGO_COUNTRY_FILTER.get('countries')
+        return country not in self.configuration.get('countries')

@@ -8,7 +8,7 @@ rm -rf .pytest_cache
 
 # Generate report to coverage.
 coverage run -m pytest
-coverage xml --omit=".env,*/test*"
+coverage xml
 
 mv coverage.xml cobertura.xml
 coverage report

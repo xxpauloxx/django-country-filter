@@ -43,7 +43,9 @@ class DjangoCountryFilterMiddleware:
             self.configuration = settings.DJANGO_COUNTRY_FILTER
             if self.check_countries_in_settings():
                 cache_provider = CacheProviderFactory(request)
-                if self.blocked_country(cache_provider.get().get('country')):
+                country_cached = cache_provider.get().get('country')
+                if (self.blocked_country(country_cached)
+                        and country_cached is not None):
                     return HttpResponseForbidden()
                 geoip_provider = GeoipProviderFactory(request).get()
                 cache_provider.provider.persist(geoip_provider, datetime.now())

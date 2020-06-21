@@ -21,7 +21,6 @@ class CacheProviderFactory:
 
     def __init__(self, request):
         """Class initializer."""
-        self.request = request
         try:
             self.provider = CacheProviderFactory.get_custom_provider(request)
         except Exception:

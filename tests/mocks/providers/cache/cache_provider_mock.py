@@ -30,4 +30,4 @@ class CacheProviderMock:
             'created_at': created_at,
             'ip': data['ip']
         }
-        self.db.update(data_cache)
+        self.db.update({'countries': [data_cache]})

@@ -22,7 +22,7 @@ def test_initialize(get_response_mock, get_request_mock):
 
 
 def test_has_no_country_settings(get_response_mock, get_request_mock):
-    """Must return the response if the DJANGO_COUNTRY_FILTER_COUNTRIES\
+    """Must return the response if the DJANGO_COUNTRY_FILTER\
     has not been set."""
     factory = DjangoCountryFilterMiddleware(get_response_mock)
     assert factory(get_request_mock) == 'hello from get_response'
@@ -37,7 +37,7 @@ def test_countries_is_not_a_list(get_response_mock, get_request_mock):
     """Must return an exception when DJANGO_COUNTRY_FILTER.get('countries')\
     not a type list."""
     factory = DjangoCountryFilterMiddleware(get_response_mock)
-    assert factory(get_response_mock) == 'hello from get_response'
+    assert factory(get_request_mock) == 'hello from get_response'
 
 
 @override_settings(
@@ -65,8 +65,10 @@ def test_forbidden_when_country_not_set(
     }
 )
 @patch('shelve.open', return_value={})
-def test_forbidden_ip_cached(
-        get_response_mock, get_request_mock, get_geoip_provider_mock):
+def test_ip_cached_forbidden(
+    get_response_mock, get_request_mock, get_geoip_provider_mock
+):
+    """Must be ip cached and forbidden request."""
     data = {'country': 'AU', 'ip': '1.1.1.1'}
 
     cache_provider = DefaultCacheProvider(get_request_mock)
@@ -77,25 +79,19 @@ def test_forbidden_ip_cached(
     assert response.status_code == 403
 
 
-@override_settings(
-    DJANGO_COUNTRY_FILTER={
-        'countries': ['BR']
-    }
-)
-@patch('shelve.open', return_value={})
+@override_settings(DJANGO_COUNTRY_FILTER={
+    'countries': ['AU']
+})
 def test_ip_cached_persist(
-        get_response_mock, get_request_mock, get_geoip_provider_mock):
+    get_response_mock, get_request_mock, get_geoip_provider_mock
+):
+    """Must be ip cached and persist data."""
     with patch.object(GeoipProviderFactory,
                       'get_custom_provider',
                       return_value=get_geoip_provider_mock(get_request_mock)):
-        data = {'country': 'BR', 'ip': '1.1.1.1'}
-
-        cache_provider = DefaultCacheProvider(get_request_mock)
-        cache_provider.persist(data, datetime.now())
-
         factory = DjangoCountryFilterMiddleware(get_response_mock)
         response = factory(get_request_mock)
-        assert response.status_code == 403
+        assert response == 'hello from get_response'
 
 
 @override_settings(

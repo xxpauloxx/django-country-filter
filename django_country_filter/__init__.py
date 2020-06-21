@@ -1,9 +1,5 @@
-"""
-Implementation of the middleware.
+"""Django country filter middleware implementation."""
 
-Responsible for filtering released countries to access the application.
-
-"""
 import logging
 
 from datetime import datetime
@@ -18,7 +14,7 @@ log = logging.getLogger(__name__)
 
 
 class DjangoCountryFilterMiddleware:
-    """Django middleware to call the class GeoipProviderFactory."""
+    """Django middleware to call the classes factories or default providers."""
 
     configuration = None
 
@@ -30,10 +26,8 @@ class DjangoCountryFilterMiddleware:
         """Check countries configuration."""
         countries = self.configuration.get('countries')
         if not isinstance(countries, list):
-            log.warning('''
-                DJANGO_COUNTRY_FILTER:
-                countries field on settings must be list.
-            ''')
+            (DjangoCountryFilterMiddleware
+                .logging_check_countries_in_settings())
             return False
         return True
 
@@ -41,18 +35,45 @@ class DjangoCountryFilterMiddleware:
         """Check the middleware settings and calls the provider."""
         if hasattr(settings, 'DJANGO_COUNTRY_FILTER'):
             self.configuration = settings.DJANGO_COUNTRY_FILTER
+            request_ip = request.META.get('REMOTE_ADDR')
+
             if self.check_countries_in_settings():
                 cache_provider = CacheProviderFactory(request)
-                country_cached = cache_provider.get().get('country')
-                if (self.blocked_country(country_cached)
-                        and country_cached is not None):
+                cache_country = cache_provider.get().get('country')
+
+                if (self.country_is_blocked(cache_country) 
+                        and cache_country is not None):
+                    (DjangoCountryFilterMiddleware
+                        .logging_country_is_blocked(cache_country, request_ip))
                     return HttpResponseForbidden()
-                geoip_provider = GeoipProviderFactory(request).get()
-                cache_provider.provider.persist(geoip_provider, datetime.now())
-                if self.blocked_country(geoip_provider['country']):
+
+                geoip_response = GeoipProviderFactory(request).get()
+                geoip_country = geoip_response.get('country')
+                cache_provider.provider.persist(geoip_response, datetime.now())
+
+                if self.country_is_blocked(geoip_country):
+                    (DjangoCountryFilterMiddleware
+                        .logging_country_is_blocked(geoip_country, request_ip))
                     return HttpResponseForbidden()
+
         return self.get_response(request)
 
-    def blocked_country(self, country):
+    def country_is_blocked(self, country):
         """Check if the country is blocked."""
         return country not in self.configuration.get('countries')
+
+    @staticmethod
+    def logging_country_is_blocked(country, ip):
+        """Log information of the block request."""
+        log.warning("""
+            DJANGO_COUNTRY_FILTER:
+            {} is blocked with ip address {}. 
+        """.format(country, ip))
+
+    @staticmethod
+    def logging_check_countries_in_settings():
+        """Log information when countries is not a list or not configured."""
+        log.warning("""
+            DJANGO_COUNTRY_FILTER:
+            countries in settings is not a list or not exist.
+        """)

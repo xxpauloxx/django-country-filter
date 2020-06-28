@@ -20,7 +20,6 @@ class DjangoCountryFilterMiddleware:
 
     __CONFIGURATION = None
     __CACHE_PROVIDER = None
-    __GEOIP_PROVIDER = None
 
     def __init__(self, get_response):
         """Middleware initializer."""
@@ -28,7 +27,7 @@ class DjangoCountryFilterMiddleware:
 
     def check_countries_in_settings(self):
         """Check countries configuration."""
-        countries = self.configuration.get('countries')
+        countries = self.__CONFIGURATION.get('countries')
         if not isinstance(countries, list):
             self.logging_check_countries_in_settings()
             return False
@@ -60,26 +59,24 @@ class DjangoCountryFilterMiddleware:
     def __call__(self, request: HttpRequest):
         """Check the middleware settings and calls the provider."""
         if hasattr(settings, 'DJANGO_COUNTRY_FILTER'):
-            self.configuration = settings.DJANGO_COUNTRY_FILTER
+            self.__CONFIGURATION = settings.DJANGO_COUNTRY_FILTER
             if self.check_countries_in_settings():
                 cache_result = self.is_blocked_from_cache(request)
                 if cache_result.get('cache') == 'BLOCK':
                     return HttpResponseForbidden()
-                elif cache_result.get('cache') == 'RELEASE':
-                    return self.get_response(request)
-                elif cache_result.get('cache') == 'NONE':
+                if cache_result.get('cache') == 'NONE':
                     if self.is_blocked_from_geoip(request):
                         return HttpResponseForbidden()
         return self.get_response(request)
 
     def country_is_blocked(self, country):
         """Check if the country is blocked."""
-        return country not in self.configuration.get('countries')
+        return country not in self.__CONFIGURATION.get('countries')
 
     def logging_country_is_blocked(self, country, ip):
         """Log information of the block request."""
-        log.warning(f'{self.__TAG}: {country} is blocked with ip address {ip}.')
+        log.warning(f'{self.__TAG}: {country} is blocked with address {ip}.')
 
     def logging_check_countries_in_settings(self):
         """Log information when countries is not a list or not configured."""
-        log.warning(f'{self.__TAG}: Countries is not a list or not exist.')
+        log.warning(f'{self.__TAG}: countries is missing or is not a list.')

@@ -43,4 +43,3 @@ class DefaultCacheProvider:
             'ip': data['ip']
         }
         self.save_on_database(data_cache)
-

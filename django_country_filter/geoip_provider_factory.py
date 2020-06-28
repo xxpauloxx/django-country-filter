@@ -1,32 +1,14 @@
 """Class factory for providers."""
 
-from importlib import import_module
-from django.conf import settings
-
+from django_country_filter.generic_provider_factory import GenericProviderFactory
 from django_country_filter.providers.geoip.default_geoip_provider import (
     DefaultGeoipProvider
 )
 
 
-class GeoipProviderFactory:
-    """Class factory for geoip providers."""
+class GeoipProviderFactory(GenericProviderFactory):
+    """Geoip class provider factory implementation."""
 
-    @staticmethod
-    def get_custom_provider(request):
-        """Return a provider according to the provider creation conventions."""
-        configuration = settings.DJANGO_COUNTRY_FILTER
-        package = import_module('{}'.format(
-            configuration.get('geoip_provider_path'))
-        )
-        return getattr(package, configuration.get('geoip_provider'))(request)
-
-    def __init__(self, request):
-        """Class initializer."""
-        try:
-            self.provider = GeoipProviderFactory.get_custom_provider(request)
-        except Exception:
-            self.provider = DefaultGeoipProvider(request)
-
-    def get(self):
-        """Call the get method of the built provider."""
-        return self.provider.get()
+    _PROVIDER_PATH = 'geoip_provider_path'
+    _PROVIDER = 'geoip_provider'
+    _DEFAULT_CLASS_PROVIDER = DefaultGeoipProvider

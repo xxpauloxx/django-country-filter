@@ -43,6 +43,7 @@ pytz==2020.1
 PyYAML==5.3.1
 requests==2.23.0
 requests-mock==1.8.0
+rope==0.17.0
 six==1.15.0
 smmap==3.0.4
 snowballstemmer==2.0.0

@@ -3,6 +3,7 @@
 import logging
 
 from importlib import import_module
+from typing import Callable
 from django.conf import settings
 
 log = logging.getLogger(__name__)
@@ -15,7 +16,7 @@ class GenericProviderFactory:
 
     _PROVIDER_PATH = ''
     _PROVIDER = ''
-    _DEFAULT_CLASS_PROVIDER = None
+    _DEFAULT_CLASS_PROVIDER = Callable
 
     def get_custom_provider(self, request):
         """Return a provider according to the provider creation conventions."""

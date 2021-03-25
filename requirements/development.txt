@@ -40,7 +40,7 @@ pytest-mock==3.1.1
 python-jsonrpc-server==0.3.4
 python-language-server==0.33.1
 pytz==2020.1
-PyYAML==5.3.1
+PyYAML==5.4
 requests==2.23.0
 requests-mock==1.8.0
 rope==0.17.0

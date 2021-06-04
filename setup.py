@@ -16,7 +16,7 @@ setuptools.setup(
     license='GPLv3+',
     url="https://github.com/0p4ul0/django-country-filter",
     packages=setuptools.find_packages(exclude=("tests",)),
-    install_requires=['requests', 'django==2.2.13'],
+    install_requires=['requests', 'django==2.2.21'],
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: GPLv3",
